@@ -1,37 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/user_provider.dart';
+import '../providers/pelanggan_provider.dart';
 
-class UserPage extends StatefulWidget {
-  const UserPage({super.key});
+class CustomerPage extends StatefulWidget {
+  const CustomerPage({super.key});
 
   @override
-  _UserPageState createState() => _UserPageState();
+  _CustomerPageState createState() => _CustomerPageState();
 }
 
-class _UserPageState extends State<UserPage> {
+class _CustomerPageState extends State<CustomerPage> {
   @override
   void initState() {
     super.initState();
-    // Memastikan user data dimuat saat widget pertama kali ditampilkan
-    Provider.of<UserProvider>(context, listen: false).fetchUser();
+    // Memastikan pelanggan data dimuat saat widget pertama kali ditampilkan
+    Provider.of<PelangganProvider>(context, listen: false).fetchPelanggan();
   }
 
-  Future<void> _showAddUserDialog(BuildContext context) async {
+  Future<void> _showAddPelangganDialog(BuildContext context) async {
     final namaController = TextEditingController();
     final alamatController = TextEditingController();
     final noHPController = TextEditingController();
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
-    final roleController = TextEditingController();
 
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final pelangganProvider =
+        Provider.of<PelangganProvider>(context, listen: false);
 
     showDialog(
       context: context,
       builder: (ctx) {
         return AlertDialog(
-          title: const Text('Tambah User'),
+          title: const Text('Tambah Pelanggan'),
           content: SingleChildScrollView(
             child: Column(
               children: [
@@ -55,11 +55,6 @@ class _UserPageState extends State<UserPage> {
                   controller: passwordController,
                   decoration: const InputDecoration(labelText: 'Kata Sandi'),
                 ),
-                TextField(
-                  controller: roleController,
-                  decoration: const InputDecoration(labelText: 'Role'),
-                  keyboardType: TextInputType.number,
-                ),
               ],
             ),
           ),
@@ -72,13 +67,12 @@ class _UserPageState extends State<UserPage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                final success = await userProvider.addUser(
+                final success = await pelangganProvider.addPelanggan(
                   nama: namaController.text,
                   alamat: alamatController.text,
                   no_hp: noHPController.text,
                   username: usernameController.text,
                   password: passwordController.text,
-                  role: 3,
                 );
 
                 // Memastikan widget masih aktif sebelum menampilkan notifikasi
@@ -86,14 +80,13 @@ class _UserPageState extends State<UserPage> {
                   Navigator.of(ctx).pop();
                   if (success) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('User berhasil ditambahkan')),
+                      const SnackBar(content: Text('Pelanggan berhasil ditambahkan')),
                     );
                     // Refresh list after adding
-                    userProvider.fetchUser();
+                    pelangganProvider.fetchPelanggan();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Gagal menambahkan user')),
+                      const SnackBar(content: Text('Gagal menambahkan pelanggan')),
                     );
                   }
                 }
@@ -106,21 +99,22 @@ class _UserPageState extends State<UserPage> {
     );
   }
 
-  Future<void> _showEditUserDialog(BuildContext context, var user) async {
-    final namaController = TextEditingController(text: user.nama);
-    final alamatController = TextEditingController(text: user.alamat);
-    final noHPController = TextEditingController(text: user.alamat);
-    final userNameController = TextEditingController(text: user.username);
+  Future<void> _showEditPelangganDialog(
+      BuildContext context, var pelanggan) async {
+    final namaController = TextEditingController(text: pelanggan.nama);
+    final alamatController = TextEditingController(text: pelanggan.alamat);
+    final noHPController = TextEditingController(text: pelanggan.alamat);
+    final userNameController = TextEditingController(text: pelanggan.username);
     final passwordController = TextEditingController(text: null);
-    final roleController = TextEditingController(text: user.role);
 
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final pelangganProvider =
+        Provider.of<PelangganProvider>(context, listen: false);
 
     showDialog(
       context: context,
       builder: (ctx) {
         return AlertDialog(
-          title: const Text('Edit User'),
+          title: const Text('Edit Pelanggan'),
           content: SingleChildScrollView(
             child: Column(
               children: [
@@ -139,15 +133,9 @@ class _UserPageState extends State<UserPage> {
                 TextField(
                   controller: userNameController,
                   decoration: const InputDecoration(labelText: 'Username'),
-                ),
-                TextField(
+                ),TextField(
                   controller: passwordController,
                   decoration: const InputDecoration(labelText: 'Kata Sandi'),
-                ),
-                TextField(
-                  controller: roleController,
-                  decoration: const InputDecoration(labelText: 'Role'),
-                  keyboardType: TextInputType.number,
                 ),
               ],
             ),
@@ -161,14 +149,13 @@ class _UserPageState extends State<UserPage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                final success = await userProvider.editUser(
-                    id: user.id,
-                    nama: namaController.text,
-                    alamat: alamatController.text,
-                    no_hp: noHPController.text,
-                    username: userNameController.text,
-                    password: passwordController.text,
-                    role: int.tryParse(roleController.text) ?? 3,
+                final success = await pelangganProvider.editPelanggan(
+                  id: pelanggan.id,
+                  nama: namaController.text,
+                  alamat: alamatController.text,
+                  no_hp: noHPController.text,
+                  username: userNameController.text,
+                  password: passwordController.text,
                 );
 
                 // Memastikan widget masih aktif sebelum menampilkan notifikasi
@@ -176,12 +163,13 @@ class _UserPageState extends State<UserPage> {
                   Navigator.of(ctx).pop();
                   if (success) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('User berhasil diperbarui')),
+                      const SnackBar(content: Text('Pelanggan berhasil diperbarui')),
                     );
-                    userProvider.fetchUser(); // Refresh list after editing
+                    pelangganProvider
+                        .fetchPelanggan(); // Refresh list after editing
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Gagal memperbarui user')),
+                      const SnackBar(content: Text('Gagal memperbarui pelanggan')),
                     );
                   }
                 }
@@ -195,7 +183,8 @@ class _UserPageState extends State<UserPage> {
   }
 
   Future<void> _confirmDelete(BuildContext context, String id) async {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final pelangganProvider =
+        Provider.of<PelangganProvider>(context, listen: false);
 
     final confirm = await showDialog(
       context: context,
@@ -222,15 +211,15 @@ class _UserPageState extends State<UserPage> {
     );
 
     if (confirm == true && mounted) {
-      final success = await userProvider.deleteUser(id);
+      final success = await pelangganProvider.deletePelanggan(id);
       if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('User berhasil dihapus')),
+          const SnackBar(content: Text('Pelanggan berhasil dihapus')),
         );
-        userProvider.fetchUser(); // Refresh list after deleting
+        pelangganProvider.fetchPelanggan(); // Refresh list after deleting
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Gagal menghapus user')),
+          const SnackBar(content: Text('Gagal menghapus pelanggan')),
         );
       }
     }
@@ -238,20 +227,20 @@ class _UserPageState extends State<UserPage> {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context);
+    final pelangganProvider = Provider.of<PelangganProvider>(context);
 
     return Scaffold(
-      body: userProvider.isLoading
+      body: pelangganProvider.isLoading
           ? const Center(child: CircularProgressIndicator())
-          : userProvider.userList.isEmpty
+          : pelangganProvider.pelangganList.isEmpty
               ? Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Tidak ada data user.'),
+                      const Text('Tidak ada data pelanggan.'),
                       ElevatedButton(
                         onPressed: () {
-                          userProvider.fetchUser();
+                          pelangganProvider.fetchPelanggan();
                         },
                         child: const Text('Coba Lagi'),
                       ),
@@ -259,20 +248,19 @@ class _UserPageState extends State<UserPage> {
                   ),
                 )
               : ListView.builder(
-                  itemCount: userProvider.userList.length,
+                  itemCount: pelangganProvider.pelangganList.length,
                   itemBuilder: (context, index) {
-                    final user = userProvider.userList[index];
+                    final pelanggan = pelangganProvider.pelangganList[index];
                     return GestureDetector(
                       onTap: () {
-                        _showEditUserDialog(context, user);
+                        _showEditPelangganDialog(context, pelanggan);
                       },
                       child: Card(
                         margin: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 5),
                         child: ListTile(
-                          leading:
-                              const Icon(Icons.image_not_supported, size: 50),
-                          title: Text(user.nama),
+                          leading: const Icon(Icons.image_not_supported, size: 50),
+                          title: Text(pelanggan.nama),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -282,7 +270,7 @@ class _UserPageState extends State<UserPage> {
                           trailing: IconButton(
                             icon: const Icon(Icons.delete, color: Colors.red),
                             onPressed: () {
-                              _confirmDelete(context, user.id);
+                              _confirmDelete(context, pelanggan.id);
                             },
                           ),
                         ),
@@ -292,7 +280,7 @@ class _UserPageState extends State<UserPage> {
                 ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _showAddUserDialog(context);
+          _showAddPelangganDialog(context);
         },
         child: const Icon(Icons.add),
       ),
