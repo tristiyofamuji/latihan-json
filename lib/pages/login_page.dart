@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (success) {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => MainPage()),
+        MaterialPageRoute(builder: (context) => const MainPage()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

@@ -16,10 +16,10 @@ class _MainPageState extends State<MainPage> {
 
   // List of pages corresponding to each drawer item
   final List<Widget> _pages = [
-    BarangPage(),
-    PelangganPage(),
-    UserPage(), // Page for User or Admin
-    TransaksiPage(), // Page for Transaksi
+    const BarangPage(),
+    const PelangganPage(),
+    const UserPage(), // Page for User or Admin
+    const TransaksiPage(), // Page for Transaksi
   ];
 
   // Titles for each page

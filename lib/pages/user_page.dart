@@ -273,7 +273,7 @@ class _UserPageState extends State<UserPage> {
                           leading:
                               const Icon(Icons.image_not_supported, size: 50),
                           title: Text(user.nama),
-                          subtitle: Column(
+                          subtitle: const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // Removed these references

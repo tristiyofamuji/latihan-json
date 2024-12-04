@@ -261,7 +261,7 @@ class _CustomerPageState extends State<CustomerPage> {
                         child: ListTile(
                           leading: const Icon(Icons.image_not_supported, size: 50),
                           title: Text(pelanggan.nama),
-                          subtitle: Column(
+                          subtitle: const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // Removed these references

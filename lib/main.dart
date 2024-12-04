@@ -28,7 +28,7 @@ void main() {
           ChangeNotifierProvider(
               create: (_) => LoginProvider()), // Tambahkan LoginProvider
         ],
-        child: MyApp(),
+        child: const MyApp(),
       ),
     ),
   );
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
       locale: DevicePreview.locale(
           context), // Mendukung locale berdasarkan DevicePreview
       builder: DevicePreview.appBuilder, // Builder untuk DevicePreview
-      home: SplashScreenPage(), // Mulai dari SplashScreenPage
+      home: const SplashScreenPage(), // Mulai dari SplashScreenPage
     );
   }
 }
@@ -62,11 +62,11 @@ class _MainPageState extends State<MainPage> {
   int _selectedPageIndex = 0;
 
   final List<Widget> _pages = [
-    HomePage(),
-    BarangPage(),
-    CustomerPage(),
-    UserPage(), // Halaman untuk User/Admin
-    TransaksiPage(), // Halaman untuk Transaksi
+    const HomePage(),
+    const BarangPage(),
+    const CustomerPage(),
+    const UserPage(), // Halaman untuk User/Admin
+    const TransaksiPage(), // Halaman untuk Transaksi
     MapsPage(),
   ];
 
@@ -91,7 +91,7 @@ class _MainPageState extends State<MainPage> {
     await prefs.clear();
 
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => LoginPage()),
+      MaterialPageRoute(builder: (context) => const LoginPage()),
     );
   }
 
